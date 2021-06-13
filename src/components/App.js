@@ -5,6 +5,10 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
+  FormControl,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from "@material-ui/core";
 import axios from "axios";
 import RepoTable from "./RepoTable";
@@ -15,6 +19,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   //setting repos to display
+  const [repos, setRepos] = useState([])
   const [repoDisplay, setRepoDisplay] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -25,6 +30,10 @@ const App = () => {
   // see if they want to sort by stars
   const [sort, setSort] = useState(false);
 
+  //set language to filter
+  const [languageFilter, setLanguageFilter] = useState("");
+  const [languageOptions, setLanguageOptions] = useState([]);
+
   const handleSearch = (phrase, sortTerm) => {
     axios
       .get("https://api.github.com/search/repositories", {
@@ -34,6 +43,7 @@ const App = () => {
         },
       })
       .then((result) => {
+        setRepos(result.data.items)
         setRepoDisplay(result.data.items);
         setLoading(false);
       })
@@ -42,10 +52,30 @@ const App = () => {
         setLoading(false);
         setError(true);
       });
-      setSort(false)
-      setSearchTerm("")
+    setSort(false);
+    setSearchTerm("");
   };
 
+  //when repos load, generate a list of language options from the returned repos.
+  useEffect(() => {
+    const languages = [];
+    repoDisplay.map((repo) => {
+      if (!languages.includes(repo.language)) {
+        languages.push(repo.language);
+      }
+    });
+    setLanguageOptions(languages);
+    console.log("language options,", languages);
+  }, [loading]);
+  
+
+  const handleFilter = (language) => {
+    setRepoDisplay(repos)
+    const filtered = repos.filter(
+      (repo) => repo.language === language
+    );
+    setRepoDisplay(filtered);
+  };
 
   return (
     <Router>
@@ -61,10 +91,10 @@ const App = () => {
           <Button
             color="primary"
             onClick={() => {
-              if(sort){
-                handleSearch(searchTerm, "stars")
+              if (sort) {
+                handleSearch(searchTerm, "stars");
               } else {
-                handleSearch(searchTerm)
+                handleSearch(searchTerm);
               }
             }}
           >
@@ -82,7 +112,28 @@ const App = () => {
             label="Sort by Stars?"
           />
         </form>
-        {repoDisplay && <RepoTable repos={repoDisplay} />}
+        {repoDisplay.length >= 1 && (
+          <section>
+            <FormControl>
+              <Select
+                labelId="demo-simple-select-placeholder-label-label"
+                id="demo-simple-select-placeholder-label"
+                value={languageFilter}
+                onChange={(e) => handleFilter(e.target.value)}
+                displayEmpty
+              >
+                <MenuItem value="">
+                  <em>Any</em>
+                </MenuItem>
+                {languageOptions.map((option) => (
+                  <MenuItem value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>Filter by Language</FormHelperText>
+            </FormControl>
+            <RepoTable repos={repoDisplay} />
+          </section>
+        )}
       </section>
       <Switch>
         <Route path="/details">{/* <Details /> */}</Route>
