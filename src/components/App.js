@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core"
 import axios from 'axios'
+import RepoTable from './RepoTable'
+import './App.css'
 
 const App = () => {
   
@@ -23,7 +25,7 @@ const App = () => {
           }
         })
         .then((result) => {
-          setRepoDisplay(result.data)
+          setRepoDisplay(result.data.items)
           setLoading(false)
         })
         .catch((err) => {
@@ -34,12 +36,6 @@ const App = () => {
       setSearchTerm("")
   }
 
-  useEffect(()=> {
-    if(repoDisplay){
-      console.log("repoDisplay,", repoDisplay)
-    }
-  }, [repoDisplay])
-
   return (
     <Router>
       <section>
@@ -47,10 +43,13 @@ const App = () => {
           <TextField id="search-field" label="Search" variant="outlined" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
           <Button color="primary" onClick={()=>handleSearch(searchTerm)}>Search</Button>
         </form>
-        <Switch>
-          <Route path="/details">{/* <Details /> */}</Route>
-        </Switch>
+        {repoDisplay &&
+          <RepoTable repos={repoDisplay}/>
+        }
       </section>
+      <Switch>
+          <Route path="/details">{/* <Details /> */}</Route>
+      </Switch>
     </Router>
   );
 };
