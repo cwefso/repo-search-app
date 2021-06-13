@@ -1,33 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import useRepos from "../hooks/useRepos";
-import axios from "axios";
+import { Button, TextField } from "@material-ui/core"
+import axios from 'axios'
 
 const App = () => {
-  const { repos, loading, error } = useRepos("tetris");
+  
+  //setting the search term
+  const [searchTerm, setSearchTerm] = useState("")
 
-  console.log("foundRepos,", repos, loading, error);
+  //setting repos to display
+  const [repoDisplay, setRepoDisplay] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  // setting selected repo
+  const [selectedRepo, setSelectedRepo] = useState({})
+
+  const handleSearch = (phrase) => {
+        axios.get('https://api.github.com/search/repositories', {
+          params: {
+            q: `${phrase}`
+          }
+        })
+        .then((result) => {
+          setRepoDisplay(result.data)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.log(err.message)
+          setLoading(false)
+          setError(true)
+        })
+      setSearchTerm("")
+  }
+
+  useEffect(()=> {
+    if(repoDisplay){
+      console.log("repoDisplay,", repoDisplay)
+    }
+  }, [repoDisplay])
 
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/details">Details</Link>
-            </li>
-          </ul>
-        </nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+      <section>
+        <form>
+          <TextField id="search-field" label="Search" variant="outlined" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
+          <Button color="primary" onClick={()=>handleSearch(searchTerm)}>Search</Button>
+        </form>
         <Switch>
-          <Route path="/details">{/* <Users /> */}</Route>
+          <Route path="/details">{/* <Details /> */}</Route>
         </Switch>
-      </div>
+      </section>
     </Router>
   );
 };
