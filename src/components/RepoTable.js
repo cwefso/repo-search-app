@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,6 +22,7 @@ const styles = theme => ({
 
 const RepoTable = (props) => {
   const { classes, repos } = props;
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -46,9 +46,5 @@ const RepoTable = (props) => {
     </Paper>
   );
 }
-
-RepoTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(RepoTable);
