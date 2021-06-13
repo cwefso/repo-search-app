@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,10 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import './RepoTable.css'
 
-const styles = theme => ({
+
+const styles = () => ({
   root: {
-    width: '90%',
-    marginTop: theme.spacing.unit * 3,
+    width: '100%',
+    marginTop: 50,
+    marginBottom: 50,
     overflowX: 'auto',
   },
   table: {
@@ -21,8 +24,8 @@ const styles = theme => ({
 
 
 const RepoTable = (props) => {
-  const { classes, repos } = props;
-
+  const { classes, repos, setSelectedRepo } = props;
+  let history = useHistory();
 
   return (
     <Paper className={classes.root}>
@@ -36,7 +39,10 @@ const RepoTable = (props) => {
         </TableHead>
         <TableBody>
           {repos.map(repo => (
-            <TableRow key={repo.id}>
+            <TableRow key={repo.id} onClick={()=>{
+              setSelectedRepo(repo)
+              history.push(`/details/${repo.name}`)
+              }}>
               <TableCell>{repo.name}</TableCell>
               <TableCell>{repo.owner.login}</TableCell>
               <TableCell>{repo.stargazers_count}</TableCell>
