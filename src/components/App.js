@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import useRepos from "../hooks/useRepos";
+import axios from "axios";
 
-export default function App() {
+const App = () => {
+  const { repos, loading, error } = useRepos("tetris");
+
+  console.log("foundRepos,", repos, loading, error);
+
   return (
     <Router>
       <div>
@@ -19,11 +25,11 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/details">
-            {/* <Users /> */}
-          </Route>
+          <Route path="/details">{/* <Users /> */}</Route>
         </Switch>
       </div>
     </Router>
   );
-}
+};
+
+export default App;
