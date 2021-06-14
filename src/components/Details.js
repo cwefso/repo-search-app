@@ -6,14 +6,13 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles(() => ({
   details: {
     width: "40%",
-    height: "50%",
+    height: "60%",
     padding: 20,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
     minWidth: 400,
-    maxHeight: "50%",
   },
   h4: {
     borderTop: "1px solid black",

@@ -45,8 +45,9 @@ const App = () => {
 
   return (
     <Router>
+      {/* Main page */}
       <Switch>
-        <Route exact path="/">
+        <Route path="/" exact>
           <section
             className={classes.root}
             style={
@@ -79,25 +80,11 @@ const App = () => {
           </section>
         </Route>
       </Switch>
+      {/* Details page */}
       <Switch>
         <Route path="/details">
           <section className={classes.details}>
             <DetailsView repo={selectedRepo} />
-          </section>
-        </Route>
-      </Switch>
-      <Switch>
-        <Route path="*">
-          <section className={classes.details}>
-            <p>Error</p>
-
-            <Link
-              to={{
-                pathname: "/",
-              }}
-            >
-              Home
-            </Link>
           </section>
         </Route>
       </Switch>
