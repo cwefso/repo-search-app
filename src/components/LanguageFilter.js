@@ -5,8 +5,19 @@ import {
   MenuItem,
   FormHelperText,
 } from "@material-ui/core/";
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles(() => ({
+  language: {
+    width: "40%",
+    marginTop: 30,
+    maxWidth: 300
+  }
+}));
 
 const LanguageFilter = (props) => {
+  const classes = useStyles()
   const { repos, repoDisplay, setRepoDisplay, loading } = props;
 
   //when repos load, generate a list of language options from the returned repos.
@@ -24,13 +35,17 @@ const LanguageFilter = (props) => {
 
   //When a language is selected, filter the shown results
   const handleFilter = (language) => {
-    setRepoDisplay(repos);
-    const filtered = repos.filter((repo) => repo.language === language);
-    setRepoDisplay(filtered);
+    if(language){
+      setRepoDisplay(repos);
+      const filtered = repos.filter((repo) => repo.language === language);
+      setRepoDisplay(filtered);
+    } else {
+      setRepoDisplay(repos);
+    }
   };
 
   return (
-    <FormControl>
+    <FormControl className={classes.language}>
       <Select
         labelId="language-filter"
         id="select language filter"

@@ -14,6 +14,21 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
+    overflowY: 'scroll',
+    minWidth: 400
+  },
+  table: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  details: {
+    alignItems: 'center',
+    backgroundColor: '#DAD6D6',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100vh',
     overflowY: 'scroll'
   },
 }));
@@ -25,7 +40,6 @@ const App = () => {
   const [repos, setRepos] = useState([]);
   const [repoDisplay, setRepoDisplay] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   // setting selected repo
   const [selectedRepo, setSelectedRepo] = useState({});
@@ -36,14 +50,15 @@ const App = () => {
       <Switch>
         <Route exact path="/">
           <section className={classes.root} style={repoDisplay.length > 0 ? {justifyContent: 'start'} : {justifyContent: 'center'}}>
-            <SearchBar setRepos={setRepos} setRepoDisplay={setRepoDisplay} setLoading={setLoading} setError={setError}/>
+            <SearchBar setRepos={setRepos} setRepoDisplay={setRepoDisplay} setLoading={setLoading}/>
             {/* Filter languages */}
             {repoDisplay.length >= 1 && (
-              <article>
+              <article className={classes.table}>
                 <LanguageFilter repos={repos} repoDisplay={repoDisplay} setRepoDisplay={setRepoDisplay} loading={loading}/>
                 <RepoTable
-                  repos={repoDisplay}
+                  repoDisplay={repoDisplay}
                   setSelectedRepo={setSelectedRepo}
+                  setRepoDisplay={setRepoDisplay}
                 />
               </article>
             )}
@@ -52,7 +67,9 @@ const App = () => {
       </Switch>
       <Switch>
         <Route path="/details">
+        <section className={classes.details}>
           <DetailsView repo={selectedRepo} />
+        </section>
         </Route>
       </Switch>
     </Router>

@@ -1,35 +1,32 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import './RepoTable.css'
+import { makeStyles } from '@material-ui/core/styles';
 
 
-const styles = () => ({
-  root: {
-    width: '100%',
-    marginTop: 50,
+const useStyles = makeStyles(() => ({
+  table: {
+    width: '90vw',
+    marginTop: 10,
     marginBottom: 50,
     overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-});
-
+    minWidth: 400,
+  }
+}));
 
 const RepoTable = (props) => {
-  const { classes, repos, setSelectedRepo } = props;
+  const classes = useStyles()
+  const { setSelectedRepo, repoDisplay } = props;
   let history = useHistory();
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
+    <Paper className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -38,7 +35,7 @@ const RepoTable = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {repos.map(repo => (
+          {repoDisplay.map(repo => (
             <TableRow key={repo.id} onClick={()=>{
               setSelectedRepo(repo)
               history.push(`/details/${repo.name}`)
@@ -54,4 +51,4 @@ const RepoTable = (props) => {
   );
 }
 
-export default withStyles(styles)(RepoTable);
+export default RepoTable;

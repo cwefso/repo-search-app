@@ -23,18 +23,20 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     alignItems: 'center',
     width: "30%",
+    minWidth: '250px'
   },
   button: {
     backgroundColor: '#92BFB1',
     width: "30%",
     color: 'white',
-    marginTop: 10
+    marginTop: 10,
+    minWidth: '200px'
   }
 }));
 
 const SearchBar = (props) => {
   const classes = useStyles()
-  const { setRepos, setRepoDisplay, setLoading, setError } = props;
+  const { setRepos, setRepoDisplay, setLoading } = props;
   const [searchTerm, setSearchTerm] = useState("")
   
   // see if they want to sort by stars
@@ -49,14 +51,17 @@ const SearchBar = (props) => {
         },
       })
       .then((result) => {
-        setRepos(result.data.items);
-        setRepoDisplay(result.data.items);
-        setLoading(false);
+        if(result.data.items.length === 0){
+          alert("No repos found")
+        } else {
+          setRepos(result.data.items);
+          setRepoDisplay(result.data.items);
+          setLoading(false);
+        }
       })
       .catch((err) => {
-        console.log(err.message);
+        alert(err.message);
         setLoading(false);
-        setError(true);
       });
     setSort(false);
     setSearchTerm("");
