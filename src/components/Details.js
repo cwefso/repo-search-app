@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   details: {
@@ -29,6 +29,13 @@ const useStyles = makeStyles(() => ({
 const DetailsView = (props) => {
   const classes = useStyles();
   const { repo } = props;
+  let history = useHistory();
+
+  useEffect(() => {
+    if (!repo.name){
+      history.push(`/error`)
+    }
+  }, [repo])
 
   return (
     <Paper className={classes.details}>

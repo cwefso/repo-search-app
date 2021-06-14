@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import RepoTable from "./RepoTable";
 import DetailsView from "./Details";
 import SearchBar from "./Searchbar";
@@ -45,6 +45,29 @@ const App = () => {
 
   return (
     <Router>
+      <Switch>
+        Catch-all route
+        <Route path="/error">
+          <section className={classes.details}>
+            <p>Error</p>
+            <Link
+              to={{
+                pathname: "/",
+              }}
+            >
+              Home
+            </Link>
+          </section>
+        </Route>
+      </Switch>
+      {/* Details page */}
+      <Switch>
+        <Route path="/details">
+          <section className={classes.details}>
+            <DetailsView repo={selectedRepo} />
+          </section>
+        </Route>
+      </Switch>
       {/* Main page */}
       <Switch>
         <Route path="/" exact>
@@ -77,14 +100,6 @@ const App = () => {
                 />
               </article>
             )}
-          </section>
-        </Route>
-      </Switch>
-      {/* Details page */}
-      <Switch>
-        <Route path="/details">
-          <section className={classes.details}>
-            <DetailsView repo={selectedRepo} />
           </section>
         </Route>
       </Switch>
