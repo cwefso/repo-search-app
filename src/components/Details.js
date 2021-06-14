@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles(() => ({
   details: {

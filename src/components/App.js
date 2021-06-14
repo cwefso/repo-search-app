@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import RepoTable from "./RepoTable";
 import DetailsView from "./Details";
 import SearchBar from "./Searchbar";

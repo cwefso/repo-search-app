@@ -31,7 +31,7 @@ const LanguageFilter = (props) => {
       }
     });
     setLanguageOptions(languages);
-  }, [loading]);
+  }, [loading, repoDisplay]);
 
   //When a language is selected, filter the shown results
   const handleFilter = (language) => {
